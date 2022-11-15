@@ -2,6 +2,7 @@ package pl.strozik.tablereservation.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class Tablee implements Serializable {
@@ -11,6 +12,8 @@ public class Tablee implements Serializable {
     private Long id;
     private Long minNumberOfSeats;
     private Long maxNumberOfSeats;
+    @OneToMany(mappedBy = "seatNumber")
+    private Set<Reservation> reservationSet ;
 
     public Tablee() {
     }
