@@ -32,4 +32,7 @@ public class ReservationService {
         this.reservationRepository.deleteReservationById(id);
     }
 
+    public Reservation findReservationById(Long id) {
+        return this.reservationRepository.findReservationById(id);
+    }
 }

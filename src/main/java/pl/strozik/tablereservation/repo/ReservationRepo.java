@@ -5,5 +5,8 @@ import pl.strozik.tablereservation.model.Reservation;
 
 public interface ReservationRepo extends JpaRepository<Reservation, Long> {
     void deleteReservationById(Long id);
+
+    Reservation findReservationById(Long id);
+
 }
 

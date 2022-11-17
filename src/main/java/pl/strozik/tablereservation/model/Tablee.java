@@ -12,8 +12,6 @@ public class Tablee implements Serializable {
     private Long id;
     private Long minNumberOfSeats;
     private Long maxNumberOfSeats;
-    @OneToMany(mappedBy = "seatNumber")
-    private Set<Reservation> reservationSet ;
 
     public Tablee() {
     }

@@ -10,29 +10,30 @@ public class Reservation implements Serializable {
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String date;
+    private String datum;
     private int duration;
-    //referencja na stolik
     @ManyToOne()
-    @JoinColumn()
     private Tablee seatNumber;
     private int numberOfSeats;
     private String fullName;
     private String phone;
     private String email;
+    @Column(nullable = true)
+    private String cancelationCode;
 
     public Reservation() {
     }
 
-    public Reservation(Long id, String date, int duration, Tablee seatNumber, int numberOfSeats, String fullName, String phone, String email) {
+    public Reservation(Long id, String date, int duration, int numberOfSeats, String fullName, String phone, String email, String cCode) {
         this.id = id;
-        this.date = date;
+        this.datum = date;
         this.duration = duration;
-        this.seatNumber = seatNumber;
+        this.seatNumber = null;
         this.numberOfSeats = numberOfSeats;
         this.fullName = fullName;
         this.phone = phone;
         this.email = email;
+        this.cancelationCode=null; // do we need this?
     }
 
     public Long getId() {
@@ -43,12 +44,12 @@ public class Reservation implements Serializable {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
+    public String getDatum() {
+        return datum;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDatum(String date) {
+        this.datum = date;
     }
 
     public int getDuration() {
@@ -99,17 +100,28 @@ public class Reservation implements Serializable {
         this.email = email;
     }
 
+
+    public String getCancelationCode() {
+        return cancelationCode;
+    }
+
+
+    public void setCancelationCode(String cancelationCode) {
+        this.cancelationCode = cancelationCode;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
                 "id=" + id +
-                ", date='" + date + '\'' +
+                ", date='" + datum + '\'' +
                 ", duration=" + duration +
                 ", seatNumber=" + seatNumber +
                 ", numberOfSeats=" + numberOfSeats +
                 ", fullName='" + fullName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", cancelationCode='" + cancelationCode + '\'' +
                 '}';
     }
 }
