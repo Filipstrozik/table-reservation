@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.strozik.tablereservation.converter.ReservationConverter;
+import pl.strozik.tablereservation.dtos.ReservationDto;
 import pl.strozik.tablereservation.model.Reservation;
 import pl.strozik.tablereservation.service.ReservationService;
 
@@ -27,9 +29,9 @@ public class ReservationApi {
     }
 
     @PostMapping()
-    public ResponseEntity<Long> createReservation(@RequestBody Reservation reservation){
-        this.reservationService.addReservation(reservation);
-        return new ResponseEntity<>(reservation.getId(), HttpStatus.CREATED);
+    public ResponseEntity<Long> createReservation(@RequestBody ReservationDto reservationDto){
+        Reservation createdReservatoion = this.reservationService.addReservation(reservationDto);
+        return new ResponseEntity<>(createdReservatoion.getId(), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -37,7 +39,7 @@ public class ReservationApi {
         Reservation foundReservation = this.reservationService.findReservationById(id);
         if(foundReservation == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         //TODO if its too late user cannot cancel the reservation.
-        String code = String.valueOf(Math.random() * 100000);
+        String code = String.valueOf(Math.floor(Math.random() * 100000));
         foundReservation.setCancelationCode(code);
         this.reservationService.updateReservation(foundReservation);
         return new ResponseEntity<>(code, HttpStatus.FOUND);
@@ -47,7 +49,9 @@ public class ReservationApi {
     public ResponseEntity<String> deleteReservation(@PathVariable("id") Long id, @PathVariable("code") String code){
         Reservation foundReservation = this.reservationService.findReservationById(id);
         if(foundReservation == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        System.out.println(foundReservation.getCancelationCode());
         if(code.equals(foundReservation.getCancelationCode())){
+            System.out.println("the same codes");
             this.reservationService.deleteResevation(id);
             return new ResponseEntity<>("deleted reservation", HttpStatus.OK);
         }
